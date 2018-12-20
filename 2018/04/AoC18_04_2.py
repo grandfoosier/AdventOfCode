@@ -23,7 +23,7 @@ def run():
 
 
 if __name__ == '__main__':
-    with open('AoC18_04_1.txt') as file:
+    with open('AoC18_04.txt') as file:
         input = [line.rstrip('\n') for line in file]
     print('Input Loaded\n')
     run()
