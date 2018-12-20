@@ -33,10 +33,10 @@ def run(input):
         for m in M: count += m.count(label)
         print(label, '-', count)
         if count > most: most = count
-    print('max:', most)
+    print('\nmax:', most)
 
 if __name__ == '__main__':
-    with open('AoC18_06_1.txt') as file:
+    with open('AoC18_06.txt') as file:
         input = [line.rstrip('\n') for line in file]
     print('Input Loaded\n')
     run(input)
