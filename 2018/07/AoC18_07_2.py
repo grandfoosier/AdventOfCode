@@ -48,7 +48,7 @@ def run(inpt):
 #     for k in s: print(k, '-', s[k])
 
 if __name__ == '__main__':
-    with open('AoC18_07_1.txt') as file:
+    with open('AoC18_07.txt') as file:
         inpt = [line.rstrip('\n') for line in file]
     print('Input Loaded\n')
     run(inpt)
