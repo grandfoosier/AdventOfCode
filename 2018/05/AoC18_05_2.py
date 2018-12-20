@@ -18,7 +18,7 @@ def run(input):
     print('\nmin:', c, '-', charDict[c])
 
 if __name__ == '__main__':
-    with open('AoC18_05_1.txt') as file:
+    with open('AoC18_05.txt') as file:
         input = [line.rstrip('\n') for line in file]
     print('Input Loaded\n')
     run(input)
