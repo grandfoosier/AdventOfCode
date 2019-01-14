@@ -1,5 +1,3 @@
-import re
-
 def run(inpt):
     size = 300
     SN = int(inpt[0])
