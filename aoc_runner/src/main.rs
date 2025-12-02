@@ -25,13 +25,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let input_path = repo_root.join(&year).join("inputs").join(format!("{}.txt", day_padded));
 
-    let input_path = input_path.canonicalize().map_err(|e| {
-        format!(
-            "Failed to locate input file '{}': {}. (manifest_dir='{}', attempted='{}')",
-            input_path.display(), e, manifest_dir.display(), repo_root.display()
-        )
-    })?;
-    let input = fs::read_to_string(&input_path)?;
+    // If the input file is missing, fall back to empty input.
+    let input = match fs::read_to_string(&input_path) {
+        Ok(s) => s,
+        Err(e) => {
+            if e.kind() == std::io::ErrorKind::NotFound {
+                //eprintln!("Input file not found at '{}', using empty input.", input_path.display());
+                String::new()
+            } else {
+                return Err(Box::new(e));
+            }
+        }
+    };
 
     generated_mods::dispatch(&year, &day_padded, &input).map_err(|e| format!("{}", e))?;
 
