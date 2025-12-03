@@ -38,9 +38,9 @@ fn part_a(input: &str) {
     println!("A) Number of times dial hit zero: {zeroes}");
 }
 
-fn part_b(_input: &str) {
+fn part_b(input: &str) {
     let (mut dial, mut zeroes) = (50, 0);
-    for cmd in _input.lines() {
+    for cmd in input.lines() {
         let (turn_dir, turn_amt) = cmd.split_at(1);
         let turn_amt: i16 = match turn_amt.parse() {
             Ok(n) => n,
