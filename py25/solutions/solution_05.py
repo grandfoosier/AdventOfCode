@@ -23,8 +23,6 @@ def solve_a(filename):
     s = sum(1 for item in available if is_fresh(fresh, item))
     return s
 
-print("A) Number of fresh ingredients:", solve_a('inputs/input_05.txt'))
-
 def trim_intervals(intervals):
     i, j = 1, 0
     while i < len(intervals):
@@ -45,4 +43,6 @@ def solve_b(filename):
     s = sum(y-x+1 for x, y in fresh)
     return s
 
-print("B) Total possible fresh ingredients:", solve_b('inputs/input_05.txt'))
+if __name__ == "__main__":
+    print("A) Number of fresh ingredients:", solve_a('inputs/input_05.txt'))
+    print("B) Total possible fresh ingredients:", solve_b('inputs/input_05.txt'))

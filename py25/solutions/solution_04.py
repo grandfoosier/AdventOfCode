@@ -23,8 +23,6 @@ def solve_a(filename):
                 s += 1
     return s
         
-print("A) Accessible rolls:", solve_a('inputs/input_04.txt'))
-
 def remove_all_once(grid):
     to_remove = []
     n = 0
@@ -47,4 +45,6 @@ def solve_b(filename):
         s += n
     return s
 
-print("B) Removed rolls:", solve_b('inputs/input_04.txt'))
+if __name__ == "__main__":
+    print("A) Accessible rolls:", solve_a('inputs/input_04.txt'))
+    print("B) Removed rolls:", solve_b('inputs/input_04.txt'))
