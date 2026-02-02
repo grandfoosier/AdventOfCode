@@ -4,8 +4,8 @@ def remove_spaces_from_line(line):
     return [x for x in line.strip().split(' ') if x != '']
 
 def read_input(filename):
+    problems = []
     with open(filename, 'r') as file:
-        problems = []
         for line in file:
             if problems == []:
                 problems = [[int(x)] for x in remove_spaces_from_line(line)]
