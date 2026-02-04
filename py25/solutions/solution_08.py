@@ -169,32 +169,37 @@ def solve_b_da(filename):
     box_b = boxes[box_b_id]
     return box_a._get_position()[0] * box_b._get_position()[0]
 
+class MinDistance:
+    def __init__(self, distance, from_box_id, box_id):
+        self.distance = distance
+        self.from_box_id = from_box_id
+        self.box_id = box_id
+
 # Dijkstra's algorithm implementation for solve_b with deletions
 def solve_b_da_del(filename):
     boxes = read_input(filename)
     connections = []
-    available_box_ids = list(range(len(boxes)))
-    min_distance = [(float('inf'), 0) for _ in boxes]
-    min_distance[0] = (0, -1)  # Start from box 0
-    while len(available_box_ids):
+    min_distances = [MinDistance(float('inf'), 0, i) for i in range(len(boxes))]
+    min_distances[0] = MinDistance(0, -1, 0)  # Start from box 0
+    while len(min_distances):
         # Find the box with the smallest distance not yet connected
-        current_available_id = min((i for i in range(len(available_box_ids))), key=lambda i: min_distance[i][0])
-        current_distance, from_box_id = min_distance[current_available_id]
-        if from_box_id != -1:
-            connections.append((current_distance, from_box_id, available_box_ids[current_available_id]))
+        current_min_distance_id = min((i for i in range(len(min_distances))), key=lambda i: min_distances[i].distance)
+        current_min_distance = min_distances[current_min_distance_id]
+        if current_min_distance.from_box_id != -1:
+            connections.append(current_min_distance)
         # Update distances to other boxes
-        for i in range(len(available_box_ids)):
-            if i != current_available_id:
-                dist = boxes[available_box_ids[current_available_id]].get_distance(boxes[available_box_ids[i]])
-                if dist < min_distance[i][0]:
-                    min_distance[i] = (dist, available_box_ids[current_available_id])
+        for i in range(len(min_distances)):
+            if i != current_min_distance_id:
+                min_distance_i = min_distances[i]
+                dist_to_current = boxes[current_min_distance.box_id].get_distance(boxes[min_distance_i.box_id])
+                if dist_to_current < min_distance_i.distance:
+                    min_distances[i] = MinDistance(dist_to_current, current_min_distance.box_id, min_distance_i.box_id)
         # Remove the current box from consideration
-        available_box_ids.pop(current_available_id)
-        min_distance.pop(current_available_id)
+        min_distances.pop(current_min_distance_id)
     # Compute product of x-coordinates of connection with greatest distance
-    _, box_a_id, box_b_id = max(connections, key=lambda conn: conn[0])
-    box_a = boxes[box_a_id]
-    box_b = boxes[box_b_id]
+    greatest_distance_entry = max(connections, key=lambda conn: conn.distance)
+    box_a = boxes[greatest_distance_entry.from_box_id]
+    box_b = boxes[greatest_distance_entry.box_id]
     return box_a._get_position()[0] * box_b._get_position()[0]
 
 if __name__ == "__main__":
