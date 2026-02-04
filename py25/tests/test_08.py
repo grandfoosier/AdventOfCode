@@ -58,9 +58,6 @@ def test_junction_box_methods():
     assert box6._get_circuit_id() != box1._get_circuit_id()
     assert len(circuits) == 2
 
-# def test_circuit_methods():
-#     box
-
 def test_bin_search():
     sorted_distances = [[1], [3], [5], [7], [9], [11], [13]]
     assert solution_08.bin_search(sorted_distances, 7) == 3
@@ -98,3 +95,13 @@ def test_solve_b():
     solution_b = solution_08.solve_b('test_inputs/test_input_08.txt', 200)
     expected_b = 216 * 117  # x-coordinates of last connected boxes in test input
     assert solution_b == expected_b
+
+def test_solve_b_da():
+    solution_b_da = solution_08.solve_b_da('test_inputs/test_input_08.txt')
+    expected_b_da = 216 * 117  # x-coordinates of last connected boxes in test input
+    assert solution_b_da == expected_b_da
+
+def test_solve_b_da_del():
+    solution_b_da_del = solution_08.solve_b_da_del('test_inputs/test_input_08.txt')
+    expected_b_da_del = 216 * 117  # x-coordinates of last connected boxes in test input
+    assert solution_b_da_del == expected_b_da_del

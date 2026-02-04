@@ -143,6 +143,62 @@ def solve_b(filename, limit):
     print("Warning: Not all boxes connected within limit.")
     return -1
 
+# Dijkstra's algorithm implementation for solve_b with list of connected boxes
+def solve_b_da(filename):
+    boxes = read_input(filename)
+    connections = []
+    min_distance = [(float('inf'), 0) for _ in boxes]
+    min_distance[0] = (0, -1)  # Start from box 0
+    connected = set()
+    while len(connected) < len(boxes):
+        # Find the box with the smallest distance not yet connected
+        current_box_id = min((i for i in range(len(boxes)) if i not in connected), key=lambda i: min_distance[i][0])
+        current_distance, from_box_id = min_distance[current_box_id]
+        connected.add(current_box_id)
+        if from_box_id != -1:
+            connections.append((current_distance, from_box_id, current_box_id))
+        # Update distances to other boxes
+        for i in range(len(boxes)):
+            if i not in connected:
+                dist = boxes[current_box_id].get_distance(boxes[i])
+                if dist < min_distance[i][0]:
+                    min_distance[i] = (dist, current_box_id)
+    # Compute product of x-coordinates of connection with greatest distance
+    _, box_a_id, box_b_id = max(connections, key=lambda conn: conn[0])
+    box_a = boxes[box_a_id]
+    box_b = boxes[box_b_id]
+    return box_a._get_position()[0] * box_b._get_position()[0]
+
+# Dijkstra's algorithm implementation for solve_b with deletions
+def solve_b_da_del(filename):
+    boxes = read_input(filename)
+    connections = []
+    available_box_ids = list(range(len(boxes)))
+    min_distance = [(float('inf'), 0) for _ in boxes]
+    min_distance[0] = (0, -1)  # Start from box 0
+    while len(available_box_ids):
+        # Find the box with the smallest distance not yet connected
+        current_available_id = min((i for i in range(len(available_box_ids))), key=lambda i: min_distance[i][0])
+        current_distance, from_box_id = min_distance[current_available_id]
+        if from_box_id != -1:
+            connections.append((current_distance, from_box_id, available_box_ids[current_available_id]))
+        # Update distances to other boxes
+        for i in range(len(available_box_ids)):
+            if i != current_available_id:
+                dist = boxes[available_box_ids[current_available_id]].get_distance(boxes[available_box_ids[i]])
+                if dist < min_distance[i][0]:
+                    min_distance[i] = (dist, available_box_ids[current_available_id])
+        # Remove the current box from consideration
+        available_box_ids.pop(current_available_id)
+        min_distance.pop(current_available_id)
+    # Compute product of x-coordinates of connection with greatest distance
+    _, box_a_id, box_b_id = max(connections, key=lambda conn: conn[0])
+    box_a = boxes[box_a_id]
+    box_b = boxes[box_b_id]
+    return box_a._get_position()[0] * box_b._get_position()[0]
+
 if __name__ == "__main__":
     print("A) Product of sizes of largest circuits:", solve_a('inputs/input_08.txt', 1000))
-    print("B) Product of coordinates of last connected boxes:", solve_b('inputs/input_08.txt', 10000))
+    # print("B1) Product of coordinates of last connected boxes:", solve_b('inputs/input_08.txt', 10000))
+    # print("B2) Product of coordinates of last connected boxes:", solve_b_da('inputs/input_08.txt'))
+    print("B3) Product of coordinates of last connected boxes:", solve_b_da_del('inputs/input_08.txt'))
